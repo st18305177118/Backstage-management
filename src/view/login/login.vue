@@ -23,17 +23,14 @@ export default {
   },
   methods: {
     ...mapActions([
-      'handleLogin',
-      'getUserInfo'
+      'handleLogin'
     ]),
     handleSubmit ({ userName, password }) {
       console.log('usrname:', userName, 'password：', password)
       this.handleLogin({ userName, password }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
+        this.$router.push({
             name: this.$config.homeName
           })
-        })
       })
     }
   }
