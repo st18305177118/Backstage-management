@@ -9,6 +9,8 @@ import Main from '@/components/main'
  *         使用'{{ 多语言字段 }}'形式结合多语言使用，例子看多语言的路由配置;
  *         可以传入一个回调函数，参数是当前路由对象，例子看动态路由和带参路由
  *  hideInMenu: (false) 设为true后在左侧菜单不会显示该页面选项
+ *  hideInBread: (false) 设为true后此级路由将不会出现在面包屑中
+ *  needInBread: (false) 如新建页详情页等隐藏左侧菜单选项但是需要显示面包屑导航
  *  notCache: (false) 设为true后页面不会缓存
  *  access: (null) 可访问该页面的权限数组，当前路由设置的权限会影响子路由
  *  icon: (-) 该页面在左侧菜单、面包屑和标签导航处显示的图标，如果是自定义图标，需要在图标名称前加下划线'_'
@@ -40,7 +42,7 @@ export default [
         path: '/home',
         name: 'home',
         meta: {
-          hideInMenu: true,
+          hideInMenu: false,
           title: '首页',
           notCache: true,
           icon: 'md-home'
@@ -49,13 +51,12 @@ export default [
       }
     ]
   },
-  // TODO: 没有子菜单隐藏父面包屑
   {
     path: '/',
     name: '_test',
     component: Main,
     meta: {
-      title: 'TEST',
+      title: '测试',
       hideInBread: true
     },
     children: [
@@ -63,10 +64,10 @@ export default [
         path: 'test',
         name: 'test',
         meta: {
-          title: 'TEST',
-          icon: 'md-home'
+          title: '测试',
+          icon: 'md-book'
         },
-        component: () => import('@/view/home')
+        component: () => import('@/view/test/test')
       }
     ]
   },

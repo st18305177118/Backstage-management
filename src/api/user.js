@@ -1,30 +1,22 @@
-import axios from '@/libs/api.request'
 
-export const login = ({ userName, password }) => {
+export const login = ({ username, password, vm }) => {
   const data = {
-    userName,
-    password
+    username,
+    password,
+    role: 'teacher'
   }
-  return axios.request({
-    url: 'login',
-    data,
-    method: 'post'
-  })
-}
-
-export const getUserInfo = (token) => {
-  return axios.request({
-    url: 'get_info',
-    params: {
-      token
-    },
-    method: 'get'
-  })
-}
-
-export const logout = (token) => {
-  return axios.request({
-    url: 'logout',
-    method: 'post'
-  })
+  vm.$axios.post('api/jwt-token', data)
+    .then(rep => {
+      if (rep.data && rep.data.token) {
+        vm.$store.commit('setToken', rep.data.token)
+        vm.$router.push({
+          name: vm.$config.homeName
+        })
+      } else {
+        vm.$Message.error(rep.msg)
+      }
+    })
+    .catch(e => {
+      vm.$Message.error(e)
+    })
 }

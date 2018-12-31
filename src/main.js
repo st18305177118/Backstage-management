@@ -12,10 +12,14 @@ import installPlugin from '@/plugin'
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+import axios from './libs/axios'
 
+Vue.use(axios)
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
+
+Vue.prototype.$store = store
 /**
  * @description 注册admin内置插件
  */

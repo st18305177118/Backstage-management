@@ -1,65 +1,41 @@
 import axios from 'axios'
-import store from '@/store'
-// import { Spin } from 'iview'
-const addErrorLog = errorInfo => {
-  const { statusText, status, request: { responseURL } } = errorInfo
-  let info = {
-    type: 'ajax',
-    code: status,
-    mes: statusText,
-    url: responseURL
-  }
-  if (!responseURL.includes('save_error_logger')) store.dispatch('addErrorLog', info)
-}
+import Vue from 'vue'
+import Cookies from 'js-cookie'
 
-class HttpRequest {
-  constructor (baseUrl = baseURL) {
-    this.baseUrl = baseUrl
-    this.queue = {}
-  }
-  getInsideConfig () {
-    const config = {
-      baseURL: this.baseUrl,
-      headers: {
-        //
+export default function () {
+  /* axios request 拦截器 */
+  axios.interceptors.request.use(
+    config => {
+      config.baseURL = 'http://examination.winsour.com/'
+      let jwtToken = Cookies.get('JWT-Token')
+      if (jwtToken && config.url !== 'api/jwt-token') {
+        // 添加JWT Token
+        config.headers.common['Authorization'] = `Bearer ${jwtToken}`
       }
-    }
-    return config
-  }
-  destroy (url) {
-    delete this.queue[url]
-    if (!Object.keys(this.queue).length) {
-      // Spin.hide()
-    }
-  }
-  interceptors (instance, url) {
-    // 请求拦截
-    instance.interceptors.request.use(config => {
-      // 添加全局的loading...
-      if (!Object.keys(this.queue).length) {
-        // Spin.show() // 不建议开启，因为界面不友好
-      }
-      this.queue[url] = true
       return config
-    }, error => {
-      return Promise.reject(error)
-    })
-    // 响应拦截
-    instance.interceptors.response.use(res => {
-      this.destroy(url)
-      const { data, status } = res
-      return { data, status }
-    }, error => {
-      this.destroy(url)
-      addErrorLog(error.response)
-      return Promise.reject(error)
-    })
-  }
-  request (options) {
-    const instance = axios.create()
-    options = Object.assign(this.getInsideConfig(), options)
-    this.interceptors(instance, options.url)
-    return instance(options)
-  }
+    },
+    err => {
+      return Promise.reject(err)
+    }
+  )
+
+  /* axios response 拦截器 */
+  axios.interceptors.response.use(
+    config => {
+      return config.data
+    },
+    err => {
+      if (err.message.toString().slice(-3) === '401') {
+        Vue.prototype.$Message.error('登陆超时，请重新登陆...')
+        setTimeout(function () {
+          store.commit('logout')
+          router.push({
+            name: 'login'
+          })
+        }, 2000)
+      }
+      return Promise.reject(err)
+    }
+  )
+  Vue.prototype.$axios = axios
 }
-export default HttpRequest
