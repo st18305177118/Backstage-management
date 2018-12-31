@@ -77,7 +77,7 @@ export default {
     },
     userAvator () {
       // return this.$store.state.user.avatorImgPath
-      return 'http://localhost:8080/img/manly.7f55ba4b.png'
+      return 'https://mucoo.top/manly.png'
     },
     cacheList () {
       return this.tagNavList.length ? this.tagNavList.filter(item => !(item.meta && item.meta.notCache)).map(item => item.name) : []
