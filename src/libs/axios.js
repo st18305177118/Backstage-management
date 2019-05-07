@@ -6,9 +6,9 @@ export default function () {
   /* axios request 拦截器 */
   axios.interceptors.request.use(
     config => {
-      config.baseURL = 'http://examination.winsour.com/'
+      config.baseURL = 'http://localhost:8888'
       let jwtToken = Cookies.get('JWT-Token')
-      if (jwtToken && config.url !== 'api/jwt-token') {
+      if (jwtToken && config.url !== 'shi/user/login') {
         // 添加JWT Token
         config.headers.common['Authorization'] = `Bearer ${jwtToken}`
       }

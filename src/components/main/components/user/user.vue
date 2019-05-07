@@ -1,7 +1,8 @@
 <template>
   <div class="user-avator-dropdown">
     <Dropdown @on-click="handleClick">
-      <Avatar :src="userAvator"/>
+      <!--<Avatar :src="userAvator"/>-->
+      <span style="color: #0066FF">{{username}}</span>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
         <DropdownItem name="logout">退出登录</DropdownItem>
@@ -12,6 +13,7 @@
 
 <script>
 import './user.less'
+import Cookies from 'js-cookie'
 import { mapActions } from 'vuex'
 export default {
   name: 'User',
@@ -19,6 +21,14 @@ export default {
     userAvator: {
       type: String,
       default: ''
+    }
+  },
+  created () {
+    this.username = Cookies.get('name')
+  },
+  data () {
+    return {
+      username: ''
     }
   },
   methods: {

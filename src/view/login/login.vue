@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     ...mapActions(['handleLogin']),
-    handleSubmit({ username, password }) {
+    handleSubmit ({ username, password }) {
       let vm = this
       this.handleLogin({ username, password, vm })
     }

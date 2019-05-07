@@ -1,22 +1,22 @@
-
+import Cookies from 'js-cookie'
 export const login = ({ username, password, vm }) => {
   const data = {
-    username,
-    password,
-    role: 'teacher'
+    name: username,
+    password: password
   }
-  vm.$axios.post('api/jwt-token', data)
+  vm.$axios.post('/shi/manager/login', data)
     .then(rep => {
-      if (rep.data && rep.data.token) {
-        vm.$store.commit('setToken', rep.data.token)
-        vm.$router.push({
-          name: vm.$config.homeName
-        })
-      } else {
-        vm.$Message.error(rep.msg)
+      Cookies.set('JWT-Token', rep.data)
+      console.log('登录', rep)
+      if (rep === false) {
+        vm.$Message.error('用户名或密码错误，请重新登录！')
+      } else if (rep === true) {
+        vm.$Message.success('登录成功')
+        Cookies.set('name', username)
+        vm.$router.push({path: '/manager'})
       }
     })
     .catch(e => {
-      vm.$Message.error(e)
+      vm.$Message.error('用户名或密码错误，请重新登录！')
     })
 }

@@ -53,21 +53,21 @@ export default [
   },
   {
     path: '/',
-    name: '_test',
+    name: '_manager',
     component: Main,
     meta: {
-      title: '测试',
+      title: '用户管理',
       hideInBread: true
     },
     children: [
       {
-        path: 'test',
-        name: 'test',
+        path: 'manager',
+        name: 'manager',
         meta: {
-          title: '测试',
+          title: '用户管理',
           icon: 'md-book'
         },
-        component: () => import('@/view/test/test')
+        component: () => import('@/view/manager/manager')
       }
     ]
   },
