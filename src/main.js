@@ -18,7 +18,6 @@ Vue.use(axios)
 Vue.use(iView, {
   i18n: (key, value) => i18n.t(key, value)
 })
-
 Vue.prototype.$store = store
 /**
  * @description 注册admin内置插件

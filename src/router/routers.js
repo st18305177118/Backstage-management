@@ -71,6 +71,46 @@ export default [
       }
     ]
   },
+  {
+    path: '/book',
+    name: '_book',
+    component: Main,
+    meta: {
+      title: '书籍管理',
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'book',
+        name: 'book',
+        meta: {
+          title: '书籍管理',
+          icon: 'md-book'
+        },
+        component: () => import('@/view/book/book')
+      }
+    ]
+  },
+  {
+    path: '/order',
+    name: '_order',
+    component: Main,
+    meta: {
+      title: '订单管理',
+      hideInBread: true
+    },
+    children: [
+      {
+        path: 'order',
+        name: 'order',
+        meta: {
+          title: '订单管理',
+          icon: 'md-book'
+        },
+        component: () => import('@/view/order/order')
+      }
+    ]
+  },
   /* {
     path: '/multilevel',
     name: 'multilevel',
